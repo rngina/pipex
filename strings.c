@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:43:45 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/01/30 16:10:10 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:27:29 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,21 @@ char	*ft_strjoin(char *s1, char *s2)
 	joined[ft_strlen(s1) + ft_strlen(s2)] = '\0';
 	free(s1);
 	return (joined);
+}
+
+char	*ft_strcat(char *dest, char *src)
+{
+	char	*ptr;
+
+	ptr = dest;
+	while (*dest)
+	{
+		dest++;
+	}
+	while (*src)
+	{
+		*dest++ = *src++;
+	}
+	*dest = '\0';
+	return (ptr);
 }

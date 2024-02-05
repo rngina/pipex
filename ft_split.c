@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 16:13:45 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/01/30 17:06:28 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/05 16:31:21 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ char	**ft_split(char *s, char c)
 	res = (char **)malloc((ft_count_words(s, c) + 1) * sizeof(char *));
 	if (!s || !res)
 		return ((void *)0);
-	start = -1;
 	i = 0;
+	start = -1;
 	while (i <= ft_strlen(s) && s[i] != '\0')
 	{
 		while (s[i] == c)
@@ -116,5 +116,5 @@ char	**ft_split(char *s, char c)
 		}
 	}
 	*res = (void *)0;
-	return (res - ft_count_words(s, c) - 1);
+	return (res - ft_count_words(s, c));
 }

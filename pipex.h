@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:40:13 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/02 12:38:10 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/05 18:46:57 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,18 @@ typedef struct s_pipex
 	char	**path;
 	char	**cmd1;
 	char	**cmd2;
+	char	*path1;
+	char	*path2;
 }		t_pipex;
 
 int		ft_strncmp(char *s1, char *s2, int n);
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strlen(char *s);
+char	*ft_strcat(char *dest, char *src);
 char	**ft_split(char *s, char c);
 
 void	ft_putstr_fd(char *s, int fd);
+void	free_path(t_pipex *pipex);
+void	free_commands(t_pipex *pipex);
 
 #endif
