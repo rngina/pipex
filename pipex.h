@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:40:13 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/05 18:46:57 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:49:37 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <sys/types.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <sys/wait.h>
+
 
 typedef struct s_pipex
 {
