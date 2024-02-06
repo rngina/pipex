@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:40:13 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/06 11:49:37 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:26:39 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <sys/wait.h>
-
 
 typedef struct s_pipex
 {
@@ -39,8 +38,14 @@ int		ft_strlen(char *s);
 char	*ft_strcat(char *dest, char *src);
 char	**ft_split(char *s, char c);
 
-void	ft_putstr_fd(char *s, int fd);
-void	free_path(t_pipex *pipex);
-void	free_commands(t_pipex *pipex);
+void	set_path(char **envp, t_pipex *pipex);
+int		openfile(char *file, int flag);
+char	*make_command(char *path, char *argv);
+char	*set_path_command(t_pipex *pipex, int num);
+
+void	free_all(t_pipex *pipex);
+// void	ft_putstr_fd(char *s, int fd);
+// void	free_path(t_pipex *pipex);
+// void	free_commands(t_pipex *pipex);
 
 #endif
