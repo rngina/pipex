@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:01:12 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/06 16:17:47 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/07 12:30:11 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	init_pipex(t_pipex *pipex, char **argv, char **envp)
 	set_path(envp, pipex);
 	pipex->cmd1 = ft_split(argv[2], ' ');
 	pipex->cmd2 = ft_split(argv[3], ' ');
-	pipex->path2 = set_path_command(pipex, 2);
 }
 
 void	first_process(int fd[2], t_pipex *pipex, char **envp, int *pid)
@@ -39,19 +38,39 @@ void	first_process(int fd[2], t_pipex *pipex, char **envp, int *pid)
 		pipex->path1 = set_path_command(pipex, 1);
 		if (access(pipex->path1, F_OK))
 			perror(pipex->path1);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		execve(pipex->path1, pipex->cmd1, envp);
+		else
+		{
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[0]);
+			close(fd[1]);
+			execve(pipex->path1, pipex->cmd1, envp);
+			exit(1);
+		}
 	}
 }
 
-void	second_process(int fd[2], t_pipex *pipex, char **envp)
+void	second_process(int fd[2], t_pipex *pipex, char **envp, int *pid)
 {
-	dup2(fd[0], STDIN_FILENO);
-	close(fd[1]);
-	close(fd[0]);
-	execve(pipex->path2, pipex->cmd2, envp);
+	*pid = fork();
+	if (*pid < 0)
+	{
+		perror("fork");
+		return ;
+	}
+	if (*pid == 0)
+	{
+		pipex->path2 = set_path_command(pipex, 2);
+		if (access(pipex->path2, F_OK))
+			perror(pipex->path2);
+		else 
+		{
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[1]);
+			close(fd[0]);
+			execve(pipex->path2, pipex->cmd2, envp);
+			exit(1);
+		}
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -67,15 +86,13 @@ int	main(int argc, char **argv, char **envp)
 		if (pipe(fd) == -1)
 			return (1);
 		first_process(fd, &pipex, envp, &pid1);
-		pid2 = fork();
-		if (pid2 < 0)
-			return (2);
-		if (pid2 == 0)
-			second_process(fd, &pipex, envp);
+		if (pid1 != 0)
+			second_process(fd, &pipex, envp, &pid2);
 		close(fd[0]);
 		close(fd[1]);
 		waitpid(pid1, NULL, 0);
-		waitpid(pid2, NULL, 0);
+		if (pid1 != 0)
+			waitpid(pid2, NULL, 0);
 		free_all(&pipex);
 	}
 }
