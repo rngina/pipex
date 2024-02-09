@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:15 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/06 15:25:55 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:22:35 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,23 @@ void	set_path(char **envp, t_pipex *pipex)
 	pipex->path = ft_split(buffer, ':');
 }
 
-int	openfile(char *file, int flag)
+int	openfile(char *file, int flag, t_pipex *pipex)
 {
 	if (flag == 0)
 	{
 		if (access(file, F_OK | R_OK))
 		{
 			perror(file);
+			pipex->flag = 1;
+			return (open(".heredoc_tmp", O_CREAT | O_RDWR | O_TRUNC, 0777));
 		}
+		pipex->flag = 0;
 		return (open(file, O_RDONLY));
 	}
-	else
+	else if (flag == 1)
 		return (open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777));
+	pipex->flag = 1;
+	return (open(file, O_WRONLY | O_CREAT | O_APPEND, 0777));
 }
 
 char	*make_command(char *path, char *argv)

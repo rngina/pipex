@@ -1,31 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 17:01:12 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/09 18:14:51 by rtavabil         ###   ########.fr       */
+/*   Created: 2024/02/09 13:17:21 by rtavabil          #+#    #+#             */
+/*   Updated: 2024/02/09 18:56:22 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	main(int argc, char **argv, char **envp)
+int	ft_strchr(char *s, int c)
 {
-	t_pipex	pipex;
-	int		pid1;
-	int		pid2;
+	int		i;
 
-	if (argc == 5)
+	i = 0;
+	if (!s)
+		return (-1);
+	if (c == '\0')
+		return (ft_strlen(s) + 1);
+	while (s[i])
 	{
-		init_pipex(&pipex, argv, envp);
-		process(&pipex, envp, &pid1, &pid2);
+		if (s[i] == c)
+			return (i);
+		i++;
 	}
-	else
+	return (-1);
+}
+
+void	*ft_memcpy(void *dest, void *src, int n)
+{
+	char	*new_dest;
+	char	*new_src;
+	int		i;
+
+	new_dest = (char *)dest;
+	new_src = (char *)src;
+	i = 0;
+	while (i < n)
 	{
-		ft_putstr_fd("Invalid number of arguments\n", STDOUT_FILENO);
-		return (1);
+		*(new_dest + i) = *(new_src + i);
+		i++;
 	}
+	return (dest);
 }

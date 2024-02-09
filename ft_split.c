@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 16:13:45 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/05 16:31:21 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:47:57 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*ft_calloc(int nmemb, int size)
 	return (NULL);
 }
 
-static char	*ft_substr(char *s, int start, int len)
+char	*ft_substr(char *s, int start, int len)
 {
 	char	*subs;
 	int		i;
