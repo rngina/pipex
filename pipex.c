@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 17:34:23 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 16:07:52 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:32:17 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,15 @@ void	first_process(t_pipex *pipex, char **envp, int *pid)
 	{
 		pipex->path1 = set_path_command(pipex, 1);
 		if (access(pipex->path1, F_OK))
-			perror(pipex->path1);
+		{
+			if (errno == ENOENT)
+			{
+				ft_putstr_fd(*(pipex->cmd1), STDERR_FILENO);
+				ft_putstr_fd(": command not found\n", STDERR_FILENO);
+			}
+			else
+				perror(pipex->path1);
+		}
 		else
 		{
 			dup2(pipex->fd[1], STDOUT_FILENO);
@@ -64,7 +72,13 @@ void	second_process(t_pipex *pipex, char **envp, int *pid)
 		pipex->path2 = set_path_command(pipex, 2);
 		if (access(pipex->path2, F_OK))
 		{
-			perror(pipex->path2);
+			if (errno == ENOENT)
+			{
+				ft_putstr_fd(*(pipex->cmd2), STDERR_FILENO);
+				ft_putstr_fd(": command not found\n", STDERR_FILENO);
+			}
+			else
+				perror(pipex->path2);
 			pipex->exit_code = 127;
 		}
 		else
