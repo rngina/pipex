@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:15 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 15:25:42 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:37:20 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,19 @@ char	*set_path_command(t_pipex *pipex, int num)
 		path_copy++;
 	}
 	return (*(command_copy));
+}
+
+void	init_pipex(t_pipex *pipex, char **argv, char **envp)
+{
+	pipex->exit_code = 0;
+	pipex->infile_fd = openfile(argv[1], 0, pipex);
+	pipex->outfile_fd = openfile(argv[4], 1, pipex);
+	if (pipex->infile_fd == -1 || pipex->outfile_fd == -1)
+		exit(1);
+	dup2(pipex->infile_fd, STDIN_FILENO);
+	dup2(pipex->outfile_fd, STDOUT_FILENO);
+	set_path(envp, pipex);
+	pipex->cmd1 = ft_split(argv[2], ' ');
+	pipex->cmd2 = ft_split(argv[3], ' ');
+	pipex->limiter = NULL;
 }

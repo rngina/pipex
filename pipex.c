@@ -6,25 +6,28 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 17:34:23 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 16:32:17 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:40:42 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	init_pipex(t_pipex *pipex, char **argv, char **envp)
+void	fp(t_pipex *pipex, char **envp)
 {
-	pipex->exit_code = 0;
-	pipex->infile_fd = openfile(argv[1], 0, pipex);
-	pipex->outfile_fd = openfile(argv[4], 1, pipex);
-	if (pipex->infile_fd == -1 || pipex->outfile_fd == -1)
-		exit(1);
-	dup2(pipex->infile_fd, STDIN_FILENO);
-	dup2(pipex->outfile_fd, STDOUT_FILENO);
-	set_path(envp, pipex);
-	pipex->cmd1 = ft_split(argv[2], ' ');
-	pipex->cmd2 = ft_split(argv[3], ' ');
-	pipex->limiter = NULL;
+	dup2(pipex->fd[1], STDOUT_FILENO);
+	close(pipex->fd[0]);
+	close(pipex->fd[1]);
+	execve(pipex->path1, pipex->cmd1, envp);
+	exit(1);
+}
+
+void	sp(t_pipex *pipex, char **envp)
+{
+	dup2(pipex->fd[0], STDIN_FILENO);
+	close(pipex->fd[1]);
+	close(pipex->fd[0]);
+	execve(pipex->path2, pipex->cmd2, envp);
+	exit(127);
 }
 
 void	first_process(t_pipex *pipex, char **envp, int *pid)
@@ -49,13 +52,7 @@ void	first_process(t_pipex *pipex, char **envp, int *pid)
 				perror(pipex->path1);
 		}
 		else
-		{
-			dup2(pipex->fd[1], STDOUT_FILENO);
-			close(pipex->fd[0]);
-			close(pipex->fd[1]);
-			execve(pipex->path1, pipex->cmd1, envp);
-			exit(1);
-		}
+			fp(pipex, envp);
 	}
 }
 
@@ -82,13 +79,7 @@ void	second_process(t_pipex *pipex, char **envp, int *pid)
 			pipex->exit_code = 127;
 		}
 		else
-		{
-			dup2(pipex->fd[0], STDIN_FILENO);
-			close(pipex->fd[1]);
-			close(pipex->fd[0]);
-			execve(pipex->path2, pipex->cmd2, envp);
-			exit(127);
-		}
+			sp(pipex, envp);
 	}
 }
 
