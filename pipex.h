@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:40:13 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/09 18:56:30 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:25:42 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <sys/wait.h>
+# include <errno.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -37,6 +38,7 @@ typedef struct s_pipex
 	char	*path2;
 	char	*limiter;
 	int		flag;
+	int		exit_code;
 }		t_pipex;
 
 int		ft_strncmp(char *s1, char *s2, int n);

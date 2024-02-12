@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 16:09:18 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/09 18:51:41 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 11:46:25 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ void	free_commands(t_pipex **pipex)
 
 void	free_all(t_pipex *pipex)
 {
-	if (pipex->limiter)
-		free(pipex->limiter);
 	free_path(&pipex);
 	free_commands(&pipex);
 }

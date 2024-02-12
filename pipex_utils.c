@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:15 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/09 18:22:35 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:25:42 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	openfile(char *file, int flag, t_pipex *pipex)
 		{
 			perror(file);
 			pipex->flag = 1;
+			pipex->exit_code = 1;
 			return (open(".heredoc_tmp", O_CREAT | O_RDWR | O_TRUNC, 0777));
 		}
 		pipex->flag = 0;

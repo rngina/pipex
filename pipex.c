@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 17:34:23 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/09 18:51:38 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:07:52 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	init_pipex(t_pipex *pipex, char **argv, char **envp)
 {
+	pipex->exit_code = 0;
 	pipex->infile_fd = openfile(argv[1], 0, pipex);
 	pipex->outfile_fd = openfile(argv[4], 1, pipex);
 	if (pipex->infile_fd == -1 || pipex->outfile_fd == -1)
@@ -23,7 +24,6 @@ void	init_pipex(t_pipex *pipex, char **argv, char **envp)
 	set_path(envp, pipex);
 	pipex->cmd1 = ft_split(argv[2], ' ');
 	pipex->cmd2 = ft_split(argv[3], ' ');
-	pipex->flag = 0;
 	pipex->limiter = NULL;
 }
 
@@ -63,31 +63,42 @@ void	second_process(t_pipex *pipex, char **envp, int *pid)
 	{
 		pipex->path2 = set_path_command(pipex, 2);
 		if (access(pipex->path2, F_OK))
+		{
 			perror(pipex->path2);
+			pipex->exit_code = 127;
+		}
 		else
 		{
 			dup2(pipex->fd[0], STDIN_FILENO);
 			close(pipex->fd[1]);
 			close(pipex->fd[0]);
 			execve(pipex->path2, pipex->cmd2, envp);
-			exit(1);
+			exit(127);
 		}
 	}
 }
 
 void	process(t_pipex *pipex, char **envp, int *pid1, int *pid2)
 {
+	int	wstatus;
+
 	if (pipe(pipex->fd) == -1)
 		exit(1);
 	first_process(pipex, envp, pid1);
-	if (pid1 != 0)
+	waitpid(*pid1, NULL, 0);
+	if (*pid1 != 0)
 		second_process(pipex, envp, pid2);
 	close(pipex->fd[0]);
 	close(pipex->fd[1]);
-	waitpid(*pid1, NULL, 0);
-	if (*pid1 != 0)
-		waitpid(*pid2, NULL, 0);
-	if (pipex->flag)
+	if (pipex->flag == 1)
 		unlink(".heredoc_tmp");
 	free_all(pipex);
+	if (*pid1 != 0)
+	{
+		waitpid(*pid2, &wstatus, 0);
+		if (WIFEXITED(wstatus))
+		{
+			exit(WEXITSTATUS(wstatus));
+		}
+	}
 }
