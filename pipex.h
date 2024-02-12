@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:40:13 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 15:25:42 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:19:36 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int		ft_strchr(char *s, int c);
 char	*ft_substr(char *s, int start, int len);
 void	*ft_memcpy(void *dest, void *src, int n);
 void	ft_putstr_fd(char *s, int fd);
+char	*ft_strdup(char *s);
 
 void	set_path(char **envp, t_pipex *pipex);
 int		openfile(char *file, int flag, t_pipex *pipex);

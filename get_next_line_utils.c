@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 13:17:21 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/09 18:56:22 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:26:08 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,17 @@ void	*ft_memcpy(void *dest, void *src, int n)
 		i++;
 	}
 	return (dest);
+}
+
+int	ft_strlen(char *s)
+{
+	int	len;
+
+	len = 0;
+	while (*s)
+	{
+		s++;
+		len++;
+	}
+	return (len);
 }

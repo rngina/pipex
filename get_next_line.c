@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 13:13:34 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 10:50:47 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:06:24 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ char	*return_line(char *buffer)
 {
 	int		new_line;
 	char	*line;
-	int		i;
 
 	if (!*buffer)
 		return (NULL);
@@ -82,9 +81,6 @@ char	*return_line(char *buffer)
 	line = ft_substr(buffer, 0, new_line + 1);
 	if (!line)
 		return (NULL);
-	i = ft_strchr(line, '\n');
-	if (i != -1)
-		line[i] = '\0';
 	return (line);
 }
 

@@ -6,24 +6,11 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:43:45 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/09 12:17:43 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:25:57 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-int	ft_strlen(char *s)
-{
-	int	len;
-
-	len = 0;
-	while (*s)
-	{
-		s++;
-		len++;
-	}
-	return (len);
-}
 
 int	ft_strncmp(char *s1, char *s2, int n)
 {
@@ -100,4 +87,23 @@ char	*ft_strcat(char *dest, char *src)
 	}
 	*dest = '\0';
 	return (ptr);
+}
+
+char	*ft_strdup(char *s)
+{
+	int		len;
+	int		i;
+	char	*dup;
+
+	len = ft_strlen(s);
+	dup = malloc(sizeof(*s) * (len + 1));
+	if (dup == ((void *)0))
+		return (((void *)0));
+	i = 0;
+	while (i <= len)
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	return (dup);
 }

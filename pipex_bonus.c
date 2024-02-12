@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:28 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 15:38:33 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:26:28 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,45 @@ void	init_pipex_hd(t_pipex *pipex, char **argv, char **envp)
 	pipex->cmd2 = ft_split(argv[4], ' ');
 }
 
+int	hd(t_pipex *pipex, int *fd, char **buffer, char **line)
+{
+	char	*copy_line;
+	int		i;
+
+	write(1, "pipe heredoc> ", 15);
+	if (get_next_line(STDIN_FILENO, line, buffer) < 0)
+		exit(1);
+	i = ft_strchr(*line, '\n');
+	if (i != -1)
+	{
+		copy_line = ft_strdup(*line);
+		copy_line[i] = '\0';
+	}
+	if (!(ft_strncmp(copy_line, pipex->limiter, ft_strlen(pipex->limiter) + 1)))
+	{
+		free(*line);
+		free(copy_line);
+		return (0);
+	}
+	write(*fd, *line, ft_strlen(*line));
+	free(*line);
+	free(copy_line);
+	return (1);
+}
+
 void	heredoc(t_pipex *pipex)
 {
 	int			fd;
 	char		*line;
 	static char	*buffer;
+	int			ret;
 
 	fd = openfile(".heredoc_tmp", 2, pipex);
 	if (fd < 0)
 		heredoc_err();
-	while (1)
-	{
-		write(1, "here_doc> ", 9);
-		if (get_next_line(STDIN_FILENO, &line, &buffer) < 0)
-			exit(1);
-		if (!(ft_strncmp(line, pipex->limiter, ft_strlen(pipex->limiter) + 1)))
-		{
-			free(line);
-			break ;
-		}
-		write(fd, line, ft_strlen(line));
-		free(line);
-	}
+	ret = 1;
+	while (ret == 1)
+		ret = hd(pipex, &fd, &buffer, &line);
 	free(buffer);
 	close(fd);
 	pipex->infile_fd = open(".heredoc_tmp", O_RDONLY);
