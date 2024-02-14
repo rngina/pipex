@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 17:01:12 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 15:25:42 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:47:04 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc == 5)
 	{
+		pid1 = -1;
+		pid2 = -1;
 		init_pipex(&pipex, argv, envp);
 		process(&pipex, envp, &pid1, &pid2);
 	}

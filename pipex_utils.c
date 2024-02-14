@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:15 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 16:37:20 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:50:24 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,18 @@ int	openfile(char *file, int flag, t_pipex *pipex)
 		if (access(file, F_OK | R_OK))
 		{
 			perror(file);
-			pipex->flag = 1;
 			pipex->exit_code = 1;
-			return (open(".heredoc_tmp", O_CREAT | O_RDWR | O_TRUNC, 0777));
+			pipex->flag = 1;
+			pipex->no_infile = 1;
+			return (open(".heredoc_tmp", O_CREAT | O_RDWR | O_TRUNC, 0644));
 		}
 		pipex->flag = 0;
 		return (open(file, O_RDONLY));
 	}
 	else if (flag == 1)
-		return (open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777));
+		return (open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	pipex->flag = 1;
-	return (open(file, O_WRONLY | O_CREAT | O_APPEND, 0777));
+	return (open(file, O_WRONLY | O_CREAT | O_APPEND, 0644));
 }
 
 char	*make_command(char *path, char *argv)
@@ -104,6 +105,8 @@ char	*set_path_command(t_pipex *pipex, int num)
 void	init_pipex(t_pipex *pipex, char **argv, char **envp)
 {
 	pipex->exit_code = 0;
+	pipex->no_infile = 0;
+	pipex->flag = 0;
 	pipex->infile_fd = openfile(argv[1], 0, pipex);
 	pipex->outfile_fd = openfile(argv[4], 1, pipex);
 	if (pipex->infile_fd == -1 || pipex->outfile_fd == -1)

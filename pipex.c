@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 17:34:23 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 16:40:42 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:56:49 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,11 @@ void	process(t_pipex *pipex, char **envp, int *pid1, int *pid2)
 {
 	int	wstatus;
 
+	wstatus = -1;
 	if (pipe(pipex->fd) == -1)
 		exit(1);
-	first_process(pipex, envp, pid1);
-	waitpid(*pid1, NULL, 0);
+	if (!(pipex->no_infile))
+		first_process(pipex, envp, pid1);
 	if (*pid1 != 0)
 		second_process(pipex, envp, pid2);
 	close(pipex->fd[0]);
@@ -98,6 +99,7 @@ void	process(t_pipex *pipex, char **envp, int *pid1, int *pid2)
 	if (pipex->flag == 1)
 		unlink(".heredoc_tmp");
 	free_all(pipex);
+	waitpid(*pid1, NULL, 0);
 	if (*pid1 != 0)
 	{
 		waitpid(*pid2, &wstatus, 0);
@@ -107,3 +109,33 @@ void	process(t_pipex *pipex, char **envp, int *pid1, int *pid2)
 		}
 	}
 }
+
+// void	process(t_pipex *pipex, char **envp, int *pid1, int *pid2)
+// {
+// 	int	wstatus;
+
+// 	if (pipe(pipex->fd) == -1) {
+// 		perror("pipe");
+// 		exit(1);
+// 	}
+
+// 	first_process(pipex, envp, pid1);
+
+// 	// Second process
+// 	if (*pid1 != 0)
+// 		second_process(pipex, envp, pid2);
+
+// 	close(pipex->fd[0]);
+// 	close(pipex->fd[1]);
+// 	if (pipex->flag == 1)
+// 		unlink(".heredoc_tmp");
+// 	free_all(pipex);
+
+// 	waitpid(*pid1, NULL, 0);
+// 	if (*pid1 != 0) {
+// 		waitpid(*pid2, &wstatus, 0);
+// 		if (WIFEXITED(wstatus)) {
+// 			exit(WEXITSTATUS(wstatus));
+// 		}
+// 	}
+// }

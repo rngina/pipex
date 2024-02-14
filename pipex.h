@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:40:13 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 17:19:36 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:20:20 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_pipex
 	char	*limiter;
 	int		flag;
 	int		exit_code;
+	int		no_infile;
 }		t_pipex;
 
 int		ft_strncmp(char *s1, char *s2, int n);
@@ -60,15 +61,11 @@ char	*set_path_command(t_pipex *pipex, int num);
 
 void	free_all(t_pipex *pipex);
 void	heredoc_err(void);
-// void	ft_putstr_fd(char *s, int fd);
-// void	free_path(t_pipex *pipex);
-// void	free_commands(t_pipex *pipex);
 
 void	init_pipex(t_pipex *pipex, char **argv, char **envp);
 void	first_process(t_pipex *pipex, char **envp, int *pid);
 void	second_process(t_pipex *pipex, char **envp, int *pid);
 void	process(t_pipex *pipex, char **envp, int *pid1, int *pid2);
-//int		heredoc(int argc, char **argv, char **envp);
 
 int		get_next_line(int fd, char **line, char **buffer);
 

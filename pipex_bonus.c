@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:28 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/12 17:26:28 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/02/13 14:07:44 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	init_pipex_hd(t_pipex *pipex, char **argv, char **envp)
 {
+	pipex->exit_code = 0;
+	pipex->no_infile = 0;
+	pipex->flag = 0;
 	set_path(envp, pipex);
 	pipex->limiter = argv[2];
 	pipex->cmd1 = ft_split(argv[3], ' ');
@@ -76,6 +79,8 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (!(ft_strcmp(argv[1], "here_doc")))
 		{
+			pid1 = -1;
+			pid2 = -1;
 			init_pipex_hd(&pipex, argv, envp);
 			heredoc(&pipex);
 			unlink(".heredoc_tmp");

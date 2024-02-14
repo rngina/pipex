@@ -6,7 +6,7 @@
 #    By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/09 17:51:13 by rtavabil          #+#    #+#              #
-#    Updated: 2024/02/12 11:40:05 by rtavabil         ###   ########.fr        #
+#    Updated: 2024/02/13 12:53:14 by rtavabil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,12 +42,12 @@ clean:
 	@rm -rf $(OBJ_PATH) $(BONUS_OBJ_PATH)
 
 fclean: clean
-	@rm -f $(NAME) pipex_bonus
+	@rm -f $(NAME) pipex
 
 re: fclean all
 
 bonus: $(BONUS_OBJS)
-	@$(CC) $(CFLAGS) -o pipex_bonus $(BONUS_OBJS)
+	@$(CC) $(CFLAGS) -o pipex $(BONUS_OBJS)
 
 $(BONUS_OBJ_PATH)%.o: %.c
 	@mkdir -p $(BONUS_OBJ_PATH)
