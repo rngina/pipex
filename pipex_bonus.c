@@ -6,7 +6,7 @@
 /*   By: rtavabil <rtavabil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:28 by rtavabil          #+#    #+#             */
-/*   Updated: 2024/02/13 14:07:44 by rtavabil         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:37:59 by rtavabil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	hd(t_pipex *pipex, int *fd, char **buffer, char **line)
 	char	*copy_line;
 	int		i;
 
+	copy_line = NULL;
 	write(1, "pipe heredoc> ", 15);
 	if (get_next_line(STDIN_FILENO, line, buffer) < 0)
 		exit(1);
